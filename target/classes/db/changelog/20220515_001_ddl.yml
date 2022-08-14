@@ -1,0 +1,53 @@
+databaseChangeLog:
+  - changeSet:
+      id: tb_client
+      author: volodymyr
+      runOnChange: true
+      changes:
+        - sqlFile:
+            path: ../sql/tb_client/change.sql
+            relativeToChangelogFile: true
+            stripComments: true
+            splitStatements: false
+        - tagDatabase:
+            tag: tb_client
+      rollback:
+        - sqlFile:
+            stripComments: true
+            relativeToChangelogFile: true
+            path: ../sql/tb_client/rollback.sql
+  - changeSet:
+      id: tb_card
+      author: volodymyr
+      runOnChange: true
+      changes:
+        - sqlFile:
+            path: ../sql/tb_card/change.sql
+            relativeToChangelogFile: true
+            stripComments: true
+            splitStatements: false
+        - tagDatabase:
+            tag: tb_card
+      rollback:
+        - sqlFile:
+            stripComments: true
+            relativeToChangelogFile: true
+            path: ../sql/tb_card/rollback.sql
+  - changeSet:
+      id: tb_transaction
+      author: volodymyr
+      runOnChange: true
+      changes:
+        - sqlFile:
+            path: ../sql/tb_transaction/change.sql
+            relativeToChangelogFile: true
+            stripComments: true
+            splitStatements: false
+        - tagDatabase:
+            tag: tb_transaction
+      rollback:
+        - sqlFile:
+            stripComments: true
+            relativeToChangelogFile: true
+            path: ../sql/tb_transaction/rollback.sql
+

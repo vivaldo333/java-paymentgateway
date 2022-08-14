@@ -1,0 +1,40 @@
+server:
+  port: 8080
+
+spring:
+  jmx:
+    enabled: true
+  liquibase:
+    enabled: false
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQL95Dialect
+    defer-datasource-initialization: true
+#need for liquibase
+#    defer-datasource-initialization: false
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    properties:
+      hibernate:
+        generate_statistics: true
+        order_insert: true
+        use_sql_comments: true
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQL95Dialect
+        default-schema: public
+        connection:
+          pool_size: 10
+          autocommit: false
+  datasource:
+    url: jdbc:h2:mem:testdb;MODE=PostgreSQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=TRUE;IGNORECASE=TRUE
+    driverClassName: org.h2.Driver
+    username: sa
+    password:
+  sql:
+    init:
+      platform: h2
+      mode: always
+      continue-on-error: false
+#      data-locations: classpath:/data.sql
+#      schema-locations: classpath:/schema.sql
+

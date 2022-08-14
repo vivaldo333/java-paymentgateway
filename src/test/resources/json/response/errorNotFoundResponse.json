@@ -1,0 +1,6 @@
+{
+  "type": "http://support.finaro.com/problem/object-not-found",
+  "title": "Not found",
+  "status": 404,
+  "detail": "Transaction with invoice 2 was not found"
+}

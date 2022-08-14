@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FileServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">java-paymentgateway</a> &gt; <a href="index.source.html" class="el_package">com.finaro.service.impl</a> &gt; <span class="el_source">FileServiceImpl.java</span></div><h1>FileServiceImpl.java</h1><pre class="source lang-java linenums">package com.finaro.service.impl;
+
+import com.finaro.service.FileService;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+import org.springframework.stereotype.Service;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+import static org.apache.commons.lang3.BooleanUtils.isFalse;
+
+@Service
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+<span class="fc" id="L22">@RequiredArgsConstructor</span>
+public class FileServiceImpl implements FileService {
+
+    @Override
+    public Path getPath(String directoryPath, String fileName) {
+<span class="fc" id="L27">        return Paths.get(directoryPath + File.separator + fileName);</span>
+    }
+
+    @Override
+    public Path createFileIfNotExists(String directoryPath, String fileName) throws IOException {
+<span class="fc" id="L32">        var file = getPath(directoryPath, fileName);</span>
+<span class="pc bpc" id="L33" title="1 of 2 branches missed.">        if (isFalse(Files.exists(file))) {</span>
+<span class="fc" id="L34">            var directory = Paths.get(directoryPath);</span>
+<span class="fc" id="L35">            Files.createDirectories(directory);</span>
+<span class="fc" id="L36">            return Files.createFile(file);</span>
+        }
+<span class="nc" id="L38">        return file;</span>
+    }
+
+    @Override
+    public Path createFileIfNotExists(Resource fileResource) throws IOException {
+<span class="fc" id="L43">        var filePath = ((ClassPathResource) fileResource).getPath();</span>
+<span class="pc bpc" id="L44" title="1 of 2 branches missed.">        if (isFalse(fileResource.exists())) {</span>
+<span class="fc" id="L45">            var fileName = fileResource.getFilename();</span>
+<span class="fc" id="L46">            var directoryPath = filePath.replace(fileName, StringUtils.EMPTY);</span>
+<span class="fc" id="L47">            return createFileIfNotExists(directoryPath, fileName);</span>
+        }
+<span class="nc" id="L49">        return fileResource.getFile().toPath();</span>
+
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

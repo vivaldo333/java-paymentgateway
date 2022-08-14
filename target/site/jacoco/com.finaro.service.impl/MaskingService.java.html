@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MaskingService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">java-paymentgateway</a> &gt; <a href="index.source.html" class="el_package">com.finaro.service.impl</a> &gt; <span class="el_source">MaskingService.java</span></div><h1>MaskingService.java</h1><pre class="source lang-java linenums">package com.finaro.service.impl;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.finaro.dto.masking.MaskStringReplacement;
+import com.finaro.dto.masking.SecureStringReplacement;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import static java.util.Objects.nonNull;
+
+<span class="fc" id="L19">@Slf4j</span>
+@Service
+<span class="fc" id="L21">@RequiredArgsConstructor</span>
+public class MaskingService {
+    private final List&lt;SecureStringReplacement&gt; secureStringReplacements;
+    private final Map&lt;String, MaskStringReplacement&gt; maskStringReplacements;
+    private final ObjectMapper objectMapper;
+
+    public String maskString(String fieldName, String fieldValue) {
+<span class="pc bpc" id="L28" title="1 of 2 branches missed.">        if (StringUtils.isNotBlank(fieldValue)</span>
+<span class="pc bpc" id="L29" title="1 of 2 branches missed.">                &amp;&amp; maskStringReplacements.containsKey(fieldName)) {</span>
+<span class="fc" id="L30">            var maskConfig = maskStringReplacements.get(fieldName);</span>
+<span class="fc" id="L31">            var replaceRepeatTimesConfig = maskConfig.getReplaceRepeatTimes();</span>
+<span class="fc bfc" id="L32" title="All 2 branches covered.">            var replaceRepeatTimes = nonNull(replaceRepeatTimesConfig)</span>
+<span class="fc" id="L33">                    ? replaceRepeatTimesConfig</span>
+<span class="fc" id="L34">                    : fieldValue.length();</span>
+<span class="fc" id="L35">            return fieldValue.replaceAll(</span>
+<span class="fc" id="L36">                    maskConfig.getRegex(), maskConfig.getReplacement().repeat(replaceRepeatTimes));</span>
+        }
+<span class="nc" id="L38">        return fieldValue;</span>
+    }
+
+    public String secureString(String stringToSecure) {
+<span class="pc bpc" id="L42" title="1 of 2 branches missed.">        if (StringUtils.isBlank(stringToSecure)) {</span>
+<span class="nc" id="L43">            return stringToSecure;</span>
+        }
+<span class="fc" id="L45">        StringBuilder securedString = new StringBuilder(stringToSecure);</span>
+        try {
+<span class="fc" id="L47">            secureStringReplacements.forEach(secureStringReplacement -&gt; {</span>
+<span class="fc" id="L48">                Matcher matcher =</span>
+<span class="fc" id="L49">                        Pattern.compile(secureStringReplacement.getRegex()).matcher(securedString);</span>
+<span class="pc bpc" id="L50" title="1 of 2 branches missed.">                if (matcher.find()) {</span>
+                    int groupToReplaceIndex = // matcher.group(0) returns full match,
+<span class="nc bnc" id="L52" title="All 2 branches missed.">                            secureStringReplacement.isGroupReplace()</span>
+<span class="nc" id="L53">                                    ? 1</span>
+<span class="nc" id="L54">                                    : 0; // matcher.group(1) returns captured group,</span>
+<span class="nc" id="L55">                    securedString.replace(</span>
+<span class="nc" id="L56">                            matcher.start(groupToReplaceIndex),</span>
+<span class="nc" id="L57">                            matcher.end(groupToReplaceIndex),</span>
+<span class="nc" id="L58">                            secureStringReplacement.getReplacement());</span>
+                }
+<span class="fc" id="L60">            });</span>
+<span class="fc" id="L61">            return securedString.toString();</span>
+<span class="nc" id="L62">        } catch (Exception ex) {</span>
+<span class="nc" id="L63">            return StringUtils.EMPTY;</span>
+        }
+    }
+
+    public &lt;T&gt; String toSecureJson(T object) {
+        try {
+<span class="fc" id="L69">            return secureString(objectMapper.writeValueAsString(object));</span>
+<span class="nc" id="L70">        } catch (JsonProcessingException e) {</span>
+<span class="nc" id="L71">            log.warn(&quot;Impossible to convert into JSON&quot;, e);</span>
+<span class="nc" id="L72">            return StringUtils.EMPTY;</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

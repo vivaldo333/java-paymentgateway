@@ -1,0 +1,7 @@
+logging.level.liquibase: DEBUG
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/paymentdb
+    username: admin
+    password: passw0rd

@@ -1,0 +1,14 @@
+{
+  "invoice": null,
+  "amount": null,
+  "currency": null,
+  "cardholder": {
+    "name": null,
+    "email": null
+  },
+  "card": {
+    "pan": null,
+    "expiry": null,
+    "cvv": null
+  }
+}

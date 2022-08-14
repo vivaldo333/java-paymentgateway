@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CardMapperImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">java-paymentgateway</a> &gt; <a href="index.source.html" class="el_package">com.finaro.mapper</a> &gt; <span class="el_source">CardMapperImpl.java</span></div><h1>CardMapperImpl.java</h1><pre class="source lang-java linenums">package com.finaro.mapper;
+
+import com.finaro.dto.transaction.CardDto;
+import com.finaro.persistence.entity.CardEntity;
+import javax.annotation.processing.Generated;
+import org.springframework.stereotype.Component;
+
+@Generated(
+    value = &quot;org.mapstruct.ap.MappingProcessor&quot;,
+    date = &quot;2022-08-15T01:11:44+0300&quot;,
+    comments = &quot;version: 1.5.2.Final, compiler: javac, environment: Java 17.0.1 (Oracle Corporation)&quot;
+)
+@Component
+<span class="fc" id="L14">public class CardMapperImpl extends CardMapper {</span>
+
+    @Override
+    public CardEntity convert(CardDto dto) {
+<span class="pc bpc" id="L18" title="1 of 2 branches missed.">        if ( dto == null ) {</span>
+<span class="nc" id="L19">            return null;</span>
+        }
+
+<span class="fc" id="L22">        CardEntity.CardEntityBuilder&lt;?, ?&gt; cardEntity = CardEntity.builder();</span>
+
+<span class="fc" id="L24">        cardEntity.pan( com.finaro.utils.Utils.encode(dto.getPan()) );</span>
+<span class="fc" id="L25">        cardEntity.expiry( com.finaro.utils.Utils.encode(dto.getExpiry()) );</span>
+
+<span class="fc" id="L27">        return cardEntity.build();</span>
+    }
+
+    @Override
+    public CardDto convert(CardEntity entity) {
+<span class="pc bpc" id="L32" title="1 of 2 branches missed.">        if ( entity == null ) {</span>
+<span class="nc" id="L33">            return null;</span>
+        }
+
+<span class="fc" id="L36">        CardDto cardDto = new CardDto();</span>
+
+<span class="fc" id="L38">        cardDto.setPan( getMaskedDecodedText(&quot;pan&quot;, entity.getPan()) );</span>
+<span class="fc" id="L39">        cardDto.setExpiry( getMaskedDecodedText(&quot;expiry&quot;, entity.getExpiry()) );</span>
+
+<span class="fc" id="L41">        return cardDto;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

@@ -1,0 +1,23 @@
+POST http://localhost:8080/transactions
+Content-Type: application/json
+X-Trace-Id: 1
+
+{
+  "invoice": 10000002,
+  "amount": 100,
+  "currency": "USD",
+  "cardholder": {
+    "name": "John Smith",
+    "email": "john@mail.com"
+  },
+  "card": {
+    "pan": "4874086338158920",
+    "expiry": "0625",
+    "cvv": "155"
+  }
+}
+
+###
+GET http://localhost:8080/transactions/10000002
+Content-Type: application/json
+X-Trace-Id: 2

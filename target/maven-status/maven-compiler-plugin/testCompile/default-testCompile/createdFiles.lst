@@ -1,0 +1,8 @@
+com/finaro/mapper/CardMapperTest.class
+com/finaro/service/impl/AuditServiceImplTest.class
+com/finaro/ApplicationITest.class
+com/finaro/utility/TestConstants.class
+com/finaro/utility/UtilityTestService.class
+com/finaro/config/AbstractIntegrationTest.class
+com/finaro/utils/UtilsTest.class
+com/finaro/api/PaymentControllerITest.class

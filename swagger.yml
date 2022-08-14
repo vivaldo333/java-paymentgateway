@@ -1,0 +1,94 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+  - url: http://localhost:8080
+    description: Generated server url
+paths:
+  /transactions:
+    post:
+      tags:
+        - payment-controller
+      operationId: submitPayment
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransactionDto'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/BasePaymentResponseDto'
+  /transactions/{invoice}:
+    get:
+      tags:
+        - payment-controller
+      operationId: retrieveTransaction
+      parameters:
+        - name: invoice
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TransactionDto'
+components:
+  schemas:
+    CardDto:
+      required:
+        - cvv
+      type: object
+      properties:
+        pan:
+          type: string
+        expiry:
+          type: string
+        cvv:
+          type: string
+    ClientDto:
+      required:
+        - email
+        - name
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+    TransactionDto:
+      required:
+        - amount
+        - card
+        - cardholder
+        - currency
+        - invoice
+      type: object
+      properties:
+        invoice:
+          type: integer
+          format: int64
+        amount:
+          type: integer
+          format: int64
+        currency:
+          type: string
+        cardholder:
+          $ref: '#/components/schemas/ClientDto'
+        card:
+          $ref: '#/components/schemas/CardDto'
+    BasePaymentResponseDto:
+      type: object
+      properties:
+        approved:
+          type: boolean

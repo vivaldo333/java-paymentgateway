@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PaymentResponseMapperImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">java-paymentgateway</a> &gt; <a href="index.source.html" class="el_package">com.finaro.mapper</a> &gt; <span class="el_source">PaymentResponseMapperImpl.java</span></div><h1>PaymentResponseMapperImpl.java</h1><pre class="source lang-java linenums">package com.finaro.mapper;
+
+import com.finaro.dto.payment.BasePaymentResponseDto;
+import com.finaro.dto.payment.ErrorPaymentResponseDto;
+import java.util.Set;
+import javax.annotation.processing.Generated;
+import javax.validation.ConstraintViolation;
+import org.springframework.stereotype.Component;
+import org.springframework.validation.BindingResult;
+
+@Generated(
+    value = &quot;org.mapstruct.ap.MappingProcessor&quot;,
+    date = &quot;2022-08-15T01:11:44+0300&quot;,
+    comments = &quot;version: 1.5.2.Final, compiler: javac, environment: Java 17.0.1 (Oracle Corporation)&quot;
+)
+@Component
+<span class="fc" id="L17">public class PaymentResponseMapperImpl implements PaymentResponseMapper {</span>
+
+    @Override
+    public BasePaymentResponseDto convert(Boolean approved) {
+<span class="nc bnc" id="L21" title="All 2 branches missed.">        if ( approved == null ) {</span>
+<span class="nc" id="L22">            return null;</span>
+        }
+
+<span class="nc" id="L25">        BasePaymentResponseDto.BasePaymentResponseDtoBuilder&lt;?, ?&gt; basePaymentResponseDto = BasePaymentResponseDto.builder();</span>
+
+<span class="nc bnc" id="L27" title="All 2 branches missed.">        if ( approved != null ) {</span>
+<span class="nc" id="L28">            basePaymentResponseDto.approved( approved );</span>
+        }
+
+<span class="nc" id="L31">        return basePaymentResponseDto.build();</span>
+    }
+
+    @Override
+    public ErrorPaymentResponseDto convert(Boolean approved, BindingResult errors) {
+<span class="pc bpc" id="L36" title="3 of 4 branches missed.">        if ( approved == null &amp;&amp; errors == null ) {</span>
+<span class="nc" id="L37">            return null;</span>
+        }
+
+<span class="fc" id="L40">        ErrorPaymentResponseDto.ErrorPaymentResponseDtoBuilder&lt;?, ?&gt; errorPaymentResponseDto = ErrorPaymentResponseDto.builder();</span>
+
+<span class="pc bpc" id="L42" title="1 of 2 branches missed.">        if ( approved != null ) {</span>
+<span class="fc" id="L43">            errorPaymentResponseDto.approved( approved );</span>
+        }
+<span class="fc" id="L45">        errorPaymentResponseDto.errors( toErrors(errors) );</span>
+
+<span class="fc" id="L47">        return errorPaymentResponseDto.build();</span>
+    }
+
+    @Override
+    public ErrorPaymentResponseDto convert(Boolean approved, Set&lt;ConstraintViolation&lt;?&gt;&gt; violations) {
+<span class="nc bnc" id="L52" title="All 4 branches missed.">        if ( approved == null &amp;&amp; violations == null ) {</span>
+<span class="nc" id="L53">            return null;</span>
+        }
+
+<span class="nc" id="L56">        ErrorPaymentResponseDto.ErrorPaymentResponseDtoBuilder&lt;?, ?&gt; errorPaymentResponseDto = ErrorPaymentResponseDto.builder();</span>
+
+<span class="nc bnc" id="L58" title="All 2 branches missed.">        if ( approved != null ) {</span>
+<span class="nc" id="L59">            errorPaymentResponseDto.approved( approved );</span>
+        }
+<span class="nc" id="L61">        errorPaymentResponseDto.errors( toErrors(violations) );</span>
+
+<span class="nc" id="L63">        return errorPaymentResponseDto.build();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

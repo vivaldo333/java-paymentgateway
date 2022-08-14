@@ -1,0 +1,157 @@
+info:
+  app-name: "java-paymentgateway"
+  app-version: "1.0.0-SNAPSHOT"
+  timestamp: '08/14/2022 22:14'
+
+server:
+  shutdown: graceful
+  forward-headers-strategy: native
+  port: 8080
+  servlet:
+    context-path: /
+
+
+spring:
+  application:
+    name: ${SPRING_APPLICATION_NAME:${info.app-name}}
+  main:
+    allow-bean-definition-overriding: false
+    banner-mode: "off"
+  data:
+    rest:
+      detection-strategy: annotated
+  jpa:
+    show-sql: false
+    hibernate:
+      ddl-auto: none
+      naming:
+        physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+    properties:
+      hibernate:
+        generate_statistics: false
+        order_insert: true
+        dialect: org.hibernate.dialect.PostgreSQL95Dialect
+        default-schema: public
+  datasource:
+    url: ${PAYMENTDB_URL}
+    username: ${PAYMENTDB_USERNAME}
+    password: ${PAYMENTDB_PASSWORD}
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 10
+      connectionTimeout: 60000
+      idleTimeout: 600000
+      maxLifetime: 1800000
+  sql:
+    init:
+      platform: postgres
+  liquibase:
+    enabled: true
+    default-schema: public
+    liquibase-schema: public
+    change-log: classpath:db/master.yml
+
+app:
+  exception:
+    global-handler:
+      enabled: true
+  audit:
+    log-file:
+      file-resource: classpath:/src/main/resources/audit/audit.log
+  async:
+    thread-pool:
+      core-pool-size: 2
+      max-pool-size: 5
+      keep-alive-seconds: 120
+      queue-capacity: 5000
+  secure-strings-replacements:
+    value:
+      - field-name: 'pan'
+        regex: '^[0-9]{12}'
+        replacement: '*'
+        replace-repeat-times: 12
+      - field-name: 'expiry'
+        regex: '[0-9]{4}'
+        replacement: '*'
+        replace-repeat-times: null
+      - field-name: 'name'
+        regex: '\D+'
+        replacement: '*'
+        replace-repeat-times: null
+    log:
+      - regex: '(?:"pan"\s*:\s*"{0,1})([^\",]*)(?:[\n,"])'
+        replacement: 'HIDDEN'
+        group-replace: true
+      - regex: '(?:"expiry"\s*:\s*"{0,1})([^\",]*)(?:[\n,"])'
+        replacement: 'HIDDEN'
+        group-replace: true
+      - regex: '(?:"name"\s*:\s*"{0,1})([^\",]*)(?:[\n,"])'
+        replacement: 'HIDDEN'
+        group-replace: true
+
+
+management:
+  server:
+    port: 8080
+  metrics:
+    web:
+      server:
+        request:
+          autotime:
+            enabled: false
+      client:
+        request:
+          autotime:
+            enabled: false
+  endpoints:
+    enabled-by-default: false
+    web:
+      base-path: /
+      exposure:
+        include: health, info, loggers, metrics, prometheus, threaddump, caches, beans, env
+      path-mapping:
+        metrics: originmetrics
+        prometheus: metrics
+        health: health
+  info:
+    git:
+      mode: full
+  health:
+    livenessstate:
+      enabled: true
+    readinessstate:
+      enabled: true
+    diskspace:
+      enabled: true
+    db:
+      enabled: true
+  endpoint:
+    health:
+      enabled: true
+      show-details: always
+      probes:
+        enabled: true
+      group:
+        liveness:
+          include: livenessState, diskSpace
+          additional-path: "server:/livenessState"
+        readines:
+          include: readinessState, db
+          additional-path: "server:/readinessState"
+    info:
+      enabled: true
+    loggers:
+      enabled: true
+    metrics:
+      enabled: true
+    prometheus:
+      enabled: true
+    threaddump:
+      enabled: true
+    caches:
+      enabled: true
+    beans:
+      enabled: true
+    env:
+      enabled: true

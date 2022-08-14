@@ -1,0 +1,13 @@
+{
+  "approved": false,
+  "errors": {
+    "transactionDto.amount": "Payment amount is required.",
+    "transactionDto.invoice": "Payment invoice is required.",
+    "transactionDto.card.pan": "Payment card number is incorrect.",
+    "transactionDto.currency": "Payment currency is required.",
+    "transactionDto.card.cvv": "Payment card cvv is required.",
+    "transactionDto.card.expiry": "Payment card is expired.",
+    "transactionDto.cardholder.name": "Cardholder name is required.",
+    "transactionDto.cardholder.email": "Cardholder email is required."
+  }
+}

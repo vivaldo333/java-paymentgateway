@@ -1,0 +1,13 @@
+{
+  "invoice": 1,
+  "amount": 100,
+  "currency": "USD",
+  "cardholder": {
+    "name": "*****************",
+    "email": "some@mail.com"
+  },
+  "card": {
+    "pan": "************9013",
+    "expiry": "****"
+  }
+}

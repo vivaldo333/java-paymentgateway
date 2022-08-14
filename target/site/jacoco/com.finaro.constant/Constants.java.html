@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Constants.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">java-paymentgateway</a> &gt; <a href="index.source.html" class="el_package">com.finaro.constant</a> &gt; <span class="el_source">Constants.java</span></div><h1>Constants.java</h1><pre class="source lang-java linenums">package com.finaro.constant;
+
+import lombok.experimental.UtilityClass;
+import org.slf4j.Marker;
+import org.slf4j.MarkerFactory;
+import org.springframework.http.server.PathContainer;
+import org.springframework.http.server.RequestPath;
+
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+@UtilityClass
+<span class="nc" id="L14">public class Constants {</span>
+
+    @UtilityClass
+<span class="nc" id="L17">    public static class DateTime {</span>
+        public static final String DEFAULT_TIME_ZONE = &quot;Europe/Kiev&quot;;
+        public static final String DEFAULT_DATE_FORMAT = &quot;dd.MM.yyyy&quot;;
+        public static final String DEFAULT_DATE_TIME_FORMAT = &quot;dd.MM.yyyy'T'HH:mm:ss.SSS'Z'&quot;;
+    }
+
+    @UtilityClass
+<span class="nc" id="L24">    public static class Http {</span>
+        public static final String TRACE_HEADER_ID = &quot;X-Trace-Id&quot;;
+<span class="fc" id="L26">        public static final Set&lt;String&gt; NON_TRACE_PATHS =</span>
+<span class="fc" id="L27">                Stream.of(&quot;/actuator&quot;, &quot;/readinessState&quot;, &quot;/livenessState&quot;, &quot;/metrics&quot;)</span>
+<span class="fc" id="L28">                        .map(x -&gt; RequestPath.parse(x, null))</span>
+<span class="fc" id="L29">                        .map(PathContainer::value)</span>
+<span class="fc" id="L30">                        .collect(Collectors.toSet());</span>
+    }
+
+
+    @UtilityClass
+<span class="nc" id="L35">    public class LogMarkers {</span>
+<span class="fc" id="L36">        public static final Marker CONFIDENTIAL = MarkerFactory.getDetachedMarker(&quot;CONFIDENTIAL&quot;);</span>
+        public static final String MASKED_DATA = &quot;********&quot;;
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

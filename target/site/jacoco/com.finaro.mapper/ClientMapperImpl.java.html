@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ClientMapperImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">java-paymentgateway</a> &gt; <a href="index.source.html" class="el_package">com.finaro.mapper</a> &gt; <span class="el_source">ClientMapperImpl.java</span></div><h1>ClientMapperImpl.java</h1><pre class="source lang-java linenums">package com.finaro.mapper;
+
+import com.finaro.dto.transaction.ClientDto;
+import com.finaro.persistence.entity.ClientEntity;
+import javax.annotation.processing.Generated;
+import org.springframework.stereotype.Component;
+
+@Generated(
+    value = &quot;org.mapstruct.ap.MappingProcessor&quot;,
+    date = &quot;2022-08-15T01:11:44+0300&quot;,
+    comments = &quot;version: 1.5.2.Final, compiler: javac, environment: Java 17.0.1 (Oracle Corporation)&quot;
+)
+@Component
+<span class="fc" id="L14">public class ClientMapperImpl extends ClientMapper {</span>
+
+    @Override
+    public ClientEntity convert(ClientDto dto) {
+<span class="pc bpc" id="L18" title="1 of 2 branches missed.">        if ( dto == null ) {</span>
+<span class="nc" id="L19">            return null;</span>
+        }
+
+<span class="fc" id="L22">        ClientEntity.ClientEntityBuilder&lt;?, ?&gt; clientEntity = ClientEntity.builder();</span>
+
+<span class="pc bpc" id="L24" title="1 of 2 branches missed.">        if ( dto.getEmail() != null ) {</span>
+<span class="fc" id="L25">            clientEntity.email( dto.getEmail() );</span>
+        }
+
+<span class="fc" id="L28">        clientEntity.name( com.finaro.utils.Utils.encode(dto.getName()) );</span>
+
+<span class="fc" id="L30">        return clientEntity.build();</span>
+    }
+
+    @Override
+    public ClientDto convert(ClientEntity entity) {
+<span class="pc bpc" id="L35" title="1 of 2 branches missed.">        if ( entity == null ) {</span>
+<span class="nc" id="L36">            return null;</span>
+        }
+
+<span class="fc" id="L39">        ClientDto clientDto = new ClientDto();</span>
+
+<span class="pc bpc" id="L41" title="1 of 2 branches missed.">        if ( entity.getEmail() != null ) {</span>
+<span class="fc" id="L42">            clientDto.setEmail( entity.getEmail() );</span>
+        }
+
+<span class="fc" id="L45">        clientDto.setName( getMaskedDecodedText(&quot;name&quot;, entity.getName()) );</span>
+
+<span class="fc" id="L47">        return clientDto;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

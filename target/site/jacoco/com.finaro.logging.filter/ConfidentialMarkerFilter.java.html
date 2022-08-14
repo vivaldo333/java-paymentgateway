@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ConfidentialMarkerFilter.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">java-paymentgateway</a> &gt; <a href="index.source.html" class="el_package">com.finaro.logging.filter</a> &gt; <span class="el_source">ConfidentialMarkerFilter.java</span></div><h1>ConfidentialMarkerFilter.java</h1><pre class="source lang-java linenums">package com.finaro.logging.filter;
+
+import ch.qos.logback.classic.spi.ILoggingEvent;
+import ch.qos.logback.core.filter.AbstractMatcherFilter;
+import ch.qos.logback.core.spi.FilterReply;
+import org.slf4j.Marker;
+import org.slf4j.MarkerFactory;
+
+/**
+ * @deprecated (2022.08.14, an example of logging confidential info, for removal)
+ */
+@Deprecated(forRemoval = true)
+<span class="fc" id="L13">public class ConfidentialMarkerFilter extends AbstractMatcherFilter&lt;ILoggingEvent&gt; {</span>
+
+    Marker markerToMatch;
+
+    @Override
+    public void start() {
+<span class="pc bpc" id="L19" title="1 of 2 branches missed.">        if (markerToMatch != null) {</span>
+<span class="fc" id="L20">            super.start();</span>
+        } else {
+<span class="nc" id="L22">            addError(String.format(&quot;The marker property must be set for [%s]&quot;, getName()));</span>
+        }
+<span class="fc" id="L24">    }</span>
+
+    @Override
+    public FilterReply decide(ILoggingEvent iLoggingEvent) {
+<span class="nc" id="L28">        Marker marker = iLoggingEvent.getMarker();</span>
+<span class="nc bnc" id="L29" title="All 2 branches missed.">        if (!isStarted()) {</span>
+<span class="nc" id="L30">            return FilterReply.NEUTRAL;</span>
+        }
+
+<span class="nc bnc" id="L33" title="All 2 branches missed.">        if (marker == null) {</span>
+<span class="nc" id="L34">            return onMismatch;</span>
+        }
+
+<span class="nc bnc" id="L37" title="All 2 branches missed.">        if (markerToMatch.contains(marker)) {</span>
+<span class="nc" id="L38">            return onMatch;</span>
+        }
+<span class="nc" id="L40">        return onMismatch;</span>
+    }
+
+    public void setMarker(String markerStr) {
+<span class="pc bpc" id="L44" title="1 of 2 branches missed.">        if (markerStr != null) {</span>
+<span class="fc" id="L45">            markerToMatch = MarkerFactory.getMarker(markerStr);</span>
+        }
+<span class="fc" id="L47">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

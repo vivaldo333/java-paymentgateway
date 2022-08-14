@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ObjectMapperModuleConfig.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">java-paymentgateway</a> &gt; <a href="index.source.html" class="el_package">com.finaro.config</a> &gt; <span class="el_source">ObjectMapperModuleConfig.java</span></div><h1>ObjectMapperModuleConfig.java</h1><pre class="source lang-java linenums">package com.finaro.config;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.zalando.problem.jackson.ProblemModule;
+import org.zalando.problem.violations.ConstraintViolationProblemModule;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.TimeZone;
+
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
+import static com.fasterxml.jackson.databind.DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT;
+import static com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES;
+import static com.fasterxml.jackson.databind.DeserializationFeature.READ_DATE_TIMESTAMPS_AS_NANOSECONDS;
+import static com.fasterxml.jackson.databind.PropertyNamingStrategies.SNAKE_CASE;
+import static com.fasterxml.jackson.databind.SerializationFeature.FAIL_ON_EMPTY_BEANS;
+import static com.fasterxml.jackson.databind.SerializationFeature.INDENT_OUTPUT;
+import static com.fasterxml.jackson.databind.SerializationFeature.WRITE_DATES_AS_TIMESTAMPS;
+import static com.fasterxml.jackson.databind.SerializationFeature.WRITE_DATE_TIMESTAMPS_AS_NANOSECONDS;
+import static com.finaro.constant.Constants.DateTime.DEFAULT_DATE_FORMAT;
+import static com.finaro.constant.Constants.DateTime.DEFAULT_DATE_TIME_FORMAT;
+import static com.finaro.constant.Constants.DateTime.DEFAULT_TIME_ZONE;
+
+@Configuration
+<span class="fc" id="L39">public class ObjectMapperModuleConfig {</span>
+
+    @Bean
+    public JavaTimeModule javaTimeModule(
+            @Qualifier(&quot;dateFormatter&quot;)
+                    DateTimeFormatter dateFormatter,
+            @Qualifier(&quot;dateTimeFormatter&quot;)
+                    DateTimeFormatter dateTimeFormatter) {
+<span class="fc" id="L47">        var javaTimeModule = new JavaTimeModule();</span>
+<span class="fc" id="L48">        javaTimeModule.addDeserializer(</span>
+                LocalDate.class,
+                new LocalDateDeserializer(dateFormatter));
+<span class="fc" id="L51">        javaTimeModule.addSerializer(</span>
+                LocalDate.class, new LocalDateSerializer(dateFormatter));
+<span class="fc" id="L53">        javaTimeModule.addDeserializer(</span>
+                LocalDateTime.class,
+                new LocalDateTimeDeserializer(dateTimeFormatter));
+<span class="fc" id="L56">        javaTimeModule.addSerializer(</span>
+                LocalDateTime.class,
+                new LocalDateTimeSerializer(dateTimeFormatter));
+
+<span class="fc" id="L60">        return javaTimeModule;</span>
+    }
+
+    @Bean
+    public MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter(
+            ObjectMapper objectMapper) {
+<span class="fc" id="L66">        return new MappingJackson2HttpMessageConverter(objectMapper);</span>
+    }
+
+    @Bean
+    public ObjectMapper objectMapper(
+            JavaTimeModule javaTimeModule,
+            DateFormat dateFormat
+    ) {
+<span class="fc" id="L74">        ObjectMapper mapper = new ObjectMapper();</span>
+<span class="fc" id="L75">        mapper.setPropertyNamingStrategy(SNAKE_CASE);</span>
+<span class="fc" id="L76">        mapper.setSerializationInclusion(NON_NULL);</span>
+<span class="fc" id="L77">        mapper.configure(INDENT_OUTPUT, true);</span>
+<span class="fc" id="L78">        mapper.configure(FAIL_ON_UNKNOWN_PROPERTIES, false);</span>
+<span class="fc" id="L79">        mapper.configure(ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);</span>
+<span class="fc" id="L80">        mapper.configure(FAIL_ON_EMPTY_BEANS, false);</span>
+<span class="fc" id="L81">        mapper.configure(WRITE_DATES_AS_TIMESTAMPS, false);</span>
+<span class="fc" id="L82">        mapper.disable(WRITE_DATE_TIMESTAMPS_AS_NANOSECONDS);</span>
+<span class="fc" id="L83">        mapper.disable(READ_DATE_TIMESTAMPS_AS_NANOSECONDS);</span>
+<span class="fc" id="L84">        mapper.setDateFormat(dateFormat);</span>
+<span class="fc" id="L85">        mapper.setTimeZone(TimeZone.getTimeZone(DEFAULT_TIME_ZONE));</span>
+<span class="fc" id="L86">        mapper.registerModule(javaTimeModule);</span>
+<span class="fc" id="L87">        mapper.registerModule(new ParameterNamesModule());</span>
+<span class="fc" id="L88">        mapper.registerModule(new Jdk8Module());</span>
+<span class="fc" id="L89">        mapper.registerModule(new ProblemModule());</span>
+<span class="fc" id="L90">        mapper.registerModule(new ConstraintViolationProblemModule());</span>
+
+<span class="fc" id="L92">        return mapper;</span>
+    }
+
+    @Bean
+    public DateFormat getDateFormat() {
+<span class="fc" id="L97">        return new SimpleDateFormat(DEFAULT_DATE_FORMAT);</span>
+    }
+
+    @Bean(name = &quot;dateFormatter&quot;)
+    public DateTimeFormatter getDateFormtatter() {
+<span class="fc" id="L102">        return DateTimeFormatter.ofPattern(DEFAULT_DATE_FORMAT);</span>
+    }
+
+    @Bean(name = &quot;dateTimeFormatter&quot;)
+    public DateTimeFormatter getDateTimeFormatter() {
+<span class="fc" id="L107">        return DateTimeFormatter.ofPattern(DEFAULT_DATE_TIME_FORMAT);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
